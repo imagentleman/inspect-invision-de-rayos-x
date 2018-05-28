@@ -1,0 +1,49 @@
+.chrome-extension-inspect-invision-cursor {
+  cursor: pointer;
+}
+
+.chrome-extension-inspect-invision-hover,
+.chrome-extension-inspect-invision-active {
+  color: #202124 !important;
+  background: rgba(0, 191, 165, 0.3) !important;
+  outline: 2px solid #ea178c !important;
+}
+
+.chrome-extension-inspect-invision-horizontal-ruler {
+  background-color: #ea178c;
+  display: none;
+  height: 2px;
+  position: fixed;
+  top: 0;
+  z-index: 13371338;
+}
+
+.chrome-extension-inspect-invision-horizontal-ruler-text {
+  color: #ea178c;
+  display: none;
+  font-size: 12px;
+  justify-content: center;
+  position: fixed;
+  top: 5px;
+  z-index: 13371338;
+}
+
+.chrome-extension-inspect-invision-vertical-ruler {
+  background-color: #ea178c;
+  display: none;
+  position: absolute;
+  left: 0;
+  width: 2px;
+  z-index: 13371338;
+}
+
+.chrome-extension-inspect-invision-vertical-ruler-text {
+  align-items: center;
+  color: #ea178c;
+  display: none;
+  font-size: 12px;
+  left: 5px;
+  position: absolute;
+  transform: translateY(-50%);
+  z-index: 13371338;
+}
