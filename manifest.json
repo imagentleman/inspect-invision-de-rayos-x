@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Inspect: Invisión de rayos x",
-  "version": "1",
+  "version": "2",
   "description":
     "Easily check page elements dimensions and distances.",
   "icons": {

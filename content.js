@@ -27,7 +27,15 @@ function remove(list) {
   });
 }
 
-function setRulerText(ruler, max, min, side, size, offset = 0) {
+function setRulerText(
+  ruler,
+  max,
+  min,
+  side,
+  size,
+  offset = 0,
+  forceOffset = false
+) {
   const number = max - min;
   const text = number === parseInt(number) ? number : number.toFixed(2);
 
@@ -35,7 +43,11 @@ function setRulerText(ruler, max, min, side, size, offset = 0) {
   ruler.attributeStyleMap.set(size, CSS.px(max - min));
 
   if (side === "top") {
-    ruler.attributeStyleMap.set(side, CSS.px(min + (max - min) / 2 + offset));
+    if (!forceOffset) {
+      ruler.attributeStyleMap.set(side, CSS.px(min + (max - min) / 2 + offset));
+    } else {
+      ruler.attributeStyleMap.set(side, CSS.px(max - 6));
+    }
   } else {
     ruler.attributeStyleMap.set(side, CSS.px(min + offset));
   }
@@ -97,8 +109,19 @@ function drawDistanceRulers() {
         : anchoredBounds.bottom;
     max = bounds.bottom < anchoredBounds.top ? anchoredBounds.top : bounds.top;
 
+    min += window.scrollY;
+    max += window.scrollY;
+
     setDistanceRuler(verticalRuler, min, max, "top", "height");
-    setRulerText(verticalRulerText, max, min, "top", "height");
+    setRulerText(
+      verticalRulerText,
+      max,
+      min,
+      "top",
+      "height",
+      window.scrollY,
+      true
+    );
 
     hide([verticalRuler2, verticalRulerText2]);
   } else {
@@ -108,6 +131,9 @@ function drawDistanceRulers() {
     max =
       bounds[side] > anchoredBounds[side] ? bounds[side] : anchoredBounds[side];
 
+    min += window.scrollY;
+    max += window.scrollY;
+
     setDistanceRuler(verticalRuler, min, max, "top", "height");
     setRulerText(verticalRulerText, max, min, "top", "height");
 
@@ -116,6 +142,9 @@ function drawDistanceRulers() {
       bounds[side] < anchoredBounds[side] ? bounds[side] : anchoredBounds[side];
     max =
       bounds[side] > anchoredBounds[side] ? bounds[side] : anchoredBounds[side];
+
+    min += window.scrollY;
+    max += window.scrollY;
 
     setDistanceRuler(verticalRuler2, min, max, "top", "height");
     setRulerText(verticalRulerText2, max, min, "top", "height");
@@ -200,68 +229,76 @@ function handleClick(e) {
 }
 
 function init() {
-  horizontalRuler = document.createElement("div");
-  horizontalRuler.classList.add(
-    "chrome-extension-inspect-invision-horizontal-ruler"
-  );
+  if (
+    !document.body.classList.contains(
+      "chrome-extension-inspect-invision-cursor"
+    )
+  ) {
+    horizontalRuler = document.createElement("div");
+    horizontalRuler.classList.add(
+      "chrome-extension-inspect-invision-horizontal-ruler"
+    );
 
-  horizontalRulerText = document.createElement("div");
-  horizontalRulerText.classList.add(
-    "chrome-extension-inspect-invision-horizontal-ruler-text"
-  );
+    horizontalRulerText = document.createElement("div");
+    horizontalRulerText.classList.add(
+      "chrome-extension-inspect-invision-horizontal-ruler-text"
+    );
 
-  horizontalRuler2 = document.createElement("div");
-  horizontalRuler2.classList.add(
-    "chrome-extension-inspect-invision-horizontal-ruler"
-  );
+    horizontalRuler2 = document.createElement("div");
+    horizontalRuler2.classList.add(
+      "chrome-extension-inspect-invision-horizontal-ruler"
+    );
 
-  horizontalRulerText = document.createElement("div");
-  horizontalRulerText.classList.add(
-    "chrome-extension-inspect-invision-horizontal-ruler-text"
-  );
+    horizontalRulerText = document.createElement("div");
+    horizontalRulerText.classList.add(
+      "chrome-extension-inspect-invision-horizontal-ruler-text"
+    );
 
-  horizontalRulerText2 = document.createElement("div");
-  horizontalRulerText2.classList.add(
-    "chrome-extension-inspect-invision-horizontal-ruler-text"
-  );
+    horizontalRulerText2 = document.createElement("div");
+    horizontalRulerText2.classList.add(
+      "chrome-extension-inspect-invision-horizontal-ruler-text"
+    );
 
-  verticalRuler = document.createElement("div");
-  verticalRuler.classList.add(
-    "chrome-extension-inspect-invision-vertical-ruler"
-  );
+    verticalRuler = document.createElement("div");
+    verticalRuler.classList.add(
+      "chrome-extension-inspect-invision-vertical-ruler"
+    );
 
-  verticalRulerText = document.createElement("div");
-  verticalRulerText.classList.add(
-    "chrome-extension-inspect-invision-vertical-ruler-text"
-  );
+    verticalRulerText = document.createElement("div");
+    verticalRulerText.classList.add(
+      "chrome-extension-inspect-invision-vertical-ruler-text"
+    );
 
-  verticalRuler2 = document.createElement("div");
-  verticalRuler2.classList.add(
-    "chrome-extension-inspect-invision-vertical-ruler"
-  );
+    verticalRuler2 = document.createElement("div");
+    verticalRuler2.classList.add(
+      "chrome-extension-inspect-invision-vertical-ruler"
+    );
 
-  verticalRulerText2 = document.createElement("div");
-  verticalRulerText2.classList.add(
-    "chrome-extension-inspect-invision-vertical-ruler-text"
-  );
+    verticalRulerText2 = document.createElement("div");
+    verticalRulerText2.classList.add(
+      "chrome-extension-inspect-invision-vertical-ruler-text"
+    );
 
-  document.body.appendChild(horizontalRuler);
-  document.body.appendChild(horizontalRulerText);
+    document.body.appendChild(horizontalRuler);
+    document.body.appendChild(horizontalRulerText);
 
-  document.body.appendChild(horizontalRuler2);
-  document.body.appendChild(horizontalRulerText2);
+    document.body.appendChild(horizontalRuler2);
+    document.body.appendChild(horizontalRulerText2);
 
-  document.body.appendChild(verticalRuler);
-  document.body.appendChild(verticalRulerText);
+    document.body.appendChild(verticalRuler);
+    document.body.appendChild(verticalRulerText);
 
-  document.body.appendChild(verticalRuler2);
-  document.body.appendChild(verticalRulerText2);
+    document.body.appendChild(verticalRuler2);
+    document.body.appendChild(verticalRulerText2);
 
-  document.body.classList.add("chrome-extension-inspect-invision-cursor");
+    document.body.classList.add("chrome-extension-inspect-invision-cursor");
 
+    prevDocumentOnClick = document.body.onclick;
+    document.body.onclick = handleClick;
+  }
+
+  document.removeEventListener("mouseover", handleHover);
   document.addEventListener("mouseover", handleHover);
-  prevDocumentOnClick = document.body.onclick;
-  document.body.onclick = handleClick;
 }
 
 function destroy() {
@@ -288,3 +325,5 @@ chrome.runtime.onMessage.addListener(function(request) {
     init();
   }
 });
+
+init();
