@@ -316,6 +316,11 @@ function destroy() {
     verticalRulerText,
     verticalRulerText2
   ]);
+  
+  if (anchor) {
+    anchor.classList.remove("chrome-extension-inspect-invision-active");
+    anchor = null;
+  }
 }
 
 chrome.runtime.onMessage.addListener(function(request) {
